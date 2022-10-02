@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Product from "./Product";
 function ProductList() {
-    const api_url="https://fakestoreapi.com/products?sort=desc.";
+    const api_url="https://fakestoreapi.com/products";
    const [products, setproducts]=useState([]);
    const [categories, setcategories]=useState([]);
 
@@ -9,7 +9,7 @@ function ProductList() {
     fetch(api_url)
     .then((res)=>res.json())
     .then((data)=>setproducts(data));
-    console.log(products);
+    //console.log(products);
 
    }
 
@@ -17,19 +17,22 @@ function ProductList() {
     fetch(`${api_url}/categories`)
     .then((res)=>res.json())
     .then((data)=>setcategories(data));
-    console.log(categories);
 
    }
    const getProductIncategory=(catName)=>{
     console.log(catName);
-    fetch(`${api_url}/categories/${catName}`)
+    fetch(`${api_url}/category/${catName}`)
     .then((res)=>res.json())
-    .then((data)=>setproducts(data));
+    .then((data)=>setproducts(data)
+    );
+    
    }
 
     useEffect(()=>{
      getProducts();
-     getGategories(); 
+     getGategories();
+    // console.log(categories);
+
     },[]);
 
 return(
@@ -39,15 +42,15 @@ return(
     <button  onClick={()=>{
                 getProducts();}}
                  className="btn btn-info">ALL</button>
-       // {categories.map((cat)=>{
-       //     return (
-        //        <button  key={cat} onClick={()=>{
-          //          getProductIncategory(cat)
+                         {categories.map((cat)=>{
+          return (
+              <button  key={cat} onClick={()=>{
+                    getProductIncategory(cat);
 
-           //     }}
-             //    className="btn btn-info">{{cat}}</button>
-          //</>  )
-       // })}
+              }}
+                className="btn btn-info">{cat}</button>
+            )
+        })} 
     <div className="row">
         { products.map((product) =>{
             return(
